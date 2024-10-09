@@ -15,9 +15,10 @@ function App() {
   const [secondMessage, setSecondMessage] = useState(null);
   var counter = null;
   var count = 4;
+  const backendURL = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3001');
+    const newSocket = io(backendURL);
     setSocket(newSocket);
 
     // Listen for new questions and game updates
@@ -85,7 +86,7 @@ function App() {
                     <>
                       <div>{message}<br/>{secondMessage}</div>
                       <GameScreen currentQuestion={currentQuestion} />
-                      <QRCodeComponent url="http://localhost:3000/player" />
+                      <QRCodeComponent url={`${backendURL}/player`} />
                     </>
                 ) : (
                     <div>
