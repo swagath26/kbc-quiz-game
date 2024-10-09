@@ -1,0 +1,10 @@
+{
+    "build": {
+      "command": "cd backend && npm install",
+      "output": "backend"
+    },
+    "start": {
+      "command": "cd backend && node src/app.js"
+    }
+  }
+  
