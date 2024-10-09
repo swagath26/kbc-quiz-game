@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-const PlayerPage = ({currentQuestion, socket}) => {
-  // console.log(socket);
+const PlayerPage = ({currentQuestion, setCurrentQuestion, message, setMessage, secondMessage, setSecondMessage, socket}) => {
+
   const [name, setName] = useState('');
   const [playerName, setPlayerName] = useState('');
   const [selectedAnswer, setSelectedAnswer] = useState('');
@@ -12,8 +12,14 @@ const PlayerPage = ({currentQuestion, socket}) => {
       socket?.emit('joinGame', name);
     }
 
+    socket?.on('currentQuestion', (question) => {
+      setCurrentQuestion(question);
+    });
+
     socket?.on('wrongAnswer', ({ name }) => {
-      alert(`Sorry ${name}, that's incorrect.`);
+      setMessage(`Sorry ${name}, that's incorrect. You had only one chance`);
+      setSecondMessage('Wait for the next question!')
+      setCurrentQuestion(null);
     });
 
     return () => {
@@ -37,34 +43,36 @@ const PlayerPage = ({currentQuestion, socket}) => {
                       <div key={index}>
                       <input
                           type="radio"
-                          id='question'
+                          id={`question${index}`}
                           name="answer"
                           value={option}
                           onChange={(e) => setSelectedAnswer(e.target.value)}
                       />
-                      <label htmlFor='#question'>{option}</label>
+                      <label htmlFor={`question${index}`}>{option}</label>
                       </div>
                   ))}
                   <button onClick={handleSubmit}>Submit Answer</button>
               </div> ) : (
-              <div>
-                Wait for the question!
-              </div>
-            ))
+              message ? 
+                <div>
+                  {message}<br/>{secondMessage}
+                </div> 
+                :
+                <div>
+                  Please wait!
+                </div>
+              )
+            )
             : (
             <div>
-                <label htmlFor='#name'>Name:</label>
+                <label htmlFor='name'>Name:</label>
                 <input
                     type='text'
                     id='name'
                     value={playerName}
                     onChange={(e) => setPlayerName(e.target.value)}
                 />
-                <button onClick={() => {
-                  setName(playerName);
-                  console.log(currentQuestion ? currentQuestion : 'prr', currentQuestion);
-                }
-                }>Submit</button>
+                <button onClick={() => setName(playerName)}>Submit</button>
             </div>
           )
         ) : (

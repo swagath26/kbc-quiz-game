@@ -16,8 +16,10 @@ const io = new Server(server, {
 app.use(cors());
 
 // Game state
+let gameStarted = false;
 let currentQuestionIndex = 0;
 let players = [];
+let wrongAnswers = 0;
 
 // Serve the questions
 app.get('/questions', (req, res) => {
@@ -32,12 +34,21 @@ io.on('connection', (socket) => {
   socket.on('joinGame', (name) => {
     const player = { id: socket.id, name, score: 0 };
     players.push(player);
+    if(gameStarted) socket.emit('currentQuestion', questions[currentQuestionIndex]);
     console.log(`${name} has joined the game.`);
   });
 
   // Send the current question to all players
   socket.on('startGame', () => {
+    gameStarted = true;
     io.emit('newQuestion', questions[currentQuestionIndex]);
+    wrongAnswers = 0;
+    socket.on('disconnect', () => {
+      gameStarted = false;
+      currentQuestionIndex = 0;
+      io.emit('gameOver', { players });
+      console.log('Host disconnected! Game Over!')
+    })
     console.log('The Game is started!');
   });
 
@@ -56,7 +67,13 @@ io.on('connection', (socket) => {
       }
     } else {
       socket.emit('wrongAnswer', { name: playerName });
-      console.log(`${playerName} has given a wrong answer.`)
+      wrongAnswers++;
+      console.log(`${playerName} has given a wrong answer.`);
+      if(players.length === wrongAnswers) {
+        io.emit('allWrong', { answer: correctAnswer });
+        console.log(`No one has given the correct answer: ${correctAnswer}.`);
+        nextQuestion();
+      }
     }
   });
 
@@ -65,9 +82,12 @@ io.on('connection', (socket) => {
       currentQuestionIndex++;
       setTimeout(() => {
         io.emit('newQuestion', questions[currentQuestionIndex]);
+        wrongAnswers = 0;
         console.log('New Question');
-      }, 10000);
+      }, 5000);
     } else {
+      gameStarted = false;
+      currentQuestionIndex = 0;
       io.emit('gameOver', { players });
       console.log('Game Over!')
     }

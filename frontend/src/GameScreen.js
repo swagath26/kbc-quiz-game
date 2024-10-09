@@ -3,7 +3,7 @@ import React from 'react';
 
 const GameScreen = ({ currentQuestion }) => {
   if (!currentQuestion) {
-    return <div>Waiting for the next question...</div>;
+    return <></>;
   }
 
   return (
