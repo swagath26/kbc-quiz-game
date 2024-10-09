@@ -4,7 +4,7 @@
       "output": "backend"
     },
     "start": {
-      "command": "cd backend && node src/app.js"
+      "command": "cd backend && npm start"
     }
   }
   
