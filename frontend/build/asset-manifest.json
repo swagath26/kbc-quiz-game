@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/kbc-quiz-game/static/css/main.73de5dcd.css",
-    "main.js": "/kbc-quiz-game/static/js/main.cd905eae.js",
-    "index.html": "/kbc-quiz-game/index.html",
-    "main.73de5dcd.css.map": "/kbc-quiz-game/static/css/main.73de5dcd.css.map",
-    "main.cd905eae.js.map": "/kbc-quiz-game/static/js/main.cd905eae.js.map"
+    "main.css": "./static/css/main.73de5dcd.css",
+    "main.js": "./static/js/main.0dfd8202.js",
+    "index.html": "./index.html",
+    "main.73de5dcd.css.map": "./static/css/main.73de5dcd.css.map",
+    "main.0dfd8202.js.map": "./static/js/main.0dfd8202.js.map"
   },
   "entrypoints": [
     "static/css/main.73de5dcd.css",
-    "static/js/main.cd905eae.js"
+    "static/js/main.0dfd8202.js"
   ]
 }
