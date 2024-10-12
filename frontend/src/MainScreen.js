@@ -83,11 +83,10 @@ const MainScreen = () => {
   const frontendURL = process.env.REACT_APP_FRONTEND_URL;
 
   return (
-    <div style={{height: '100vh', display: 'flex', flexDirection: 'column'}}>
-      <h1 style={{textAlign: 'center', paddingBlock: '1em'}}>KBC Multiplayer Game</h1>
+    <div style={{height: '100vh', display: 'flex', flexDirection: 'column', padding: '0 2em'}}>
       {gameStarted ? (
-          <div className='main-screen' style={{display: 'flex', flexGrow: 1, gap: '3em', padding: '0em 4em'}}>
-            <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1, gap: '2em', maxWidth: '1024px', padding: '1em 1em', boxSizing: 'border-box'}}>
+          <div className='main-screen' style={{display: 'flex', flexGrow: 1, gap: '3em'}}>
+            <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1, gap: '2em', maxWidth: '900px', padding: '1em 1em', boxSizing: 'border-box'}}>
               <GameScreen currentQuestion={currentQuestion} />
               {!isAnswered.state && !isAllWrong.state ? 
                 (players.length > 1 ? <LeaderBoard players={players} setWinner={setWinner} /> : <></>)
@@ -107,15 +106,19 @@ const MainScreen = () => {
             ))}
           </div>
       ) : (
-          <div style={{display: 'flex', justifyContent: 'center', marginBlock: '1em'}}>
+          <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginBlock: '1em'}}>
+            <h1 style={{textAlign: 'center', paddingBlock: '1em'}}>KBC Multiplayer Game</h1>
             {gameEnded ?
               <div>
-                <Result winner={winner} />
+                <br/><br/><Result winner={winner} /><br/><br/><br/>
                 <LeaderBoard players={players} setWinner={setWinner} gameEnded={true} />
               </div>
               : <></>
             }
-            <button onClick={startGame}>Start Game</button>
+            <button 
+              onClick={startGame}
+              style={{borderRadius: '15px', cursor: 'pointer', marginTop: '2em'}}
+            >New Game</button>
           </div>
       )}
     </div>

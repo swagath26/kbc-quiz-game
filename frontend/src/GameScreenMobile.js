@@ -8,13 +8,13 @@ const GameScreenMobile = ({ currentQuestion, selectedAnswer, setSelectedAnswer }
   return (
     <div className="game-screen" style={{display: 'flex', flexDirection: 'column', gap: '2em'}}>
       <h2>{currentQuestion.question}</h2>
-      <div className="options" style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '1em'}}>
+      <div className="options" style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '1.25em'}}>
         {currentQuestion.options.map((option, index) => (
             <label 
                 htmlFor={`option${index}`} 
                 key={index} 
                 className="option" 
-                style={{width: '35%', minWidth: '200px', maxWidth: '400px', padding: '1em', cursor: 'pointer', 
+                style={{width: '35%', minWidth: '200px', maxWidth: '400px', padding: '0.75em 1em', cursor: 'pointer', borderRadius: '15px',
                     backgroundColor: `${selectedAnswer === option ? '#aaaaaa' : '#eeeeee'}`
                 }}
             >

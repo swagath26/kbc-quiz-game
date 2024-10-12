@@ -36,6 +36,7 @@ const PlayerPage = () => {
       setDisplayWrongAnswer(false);
       setCurrentQuestion(question);
       setGameStarted(true);
+      setGameEnded(false);
     });
 
     newSocket.on('correctAnswer', ({ name, answer, updatedPlayers }) => {
@@ -58,6 +59,7 @@ const PlayerPage = () => {
     newSocket.on('currentQuestion', (question) => {
       setCurrentQuestion(question);
       setGameStarted(true);
+      setGameEnded(false);
     });
 
     newSocket.on('congrats', () => {
@@ -91,7 +93,7 @@ const PlayerPage = () => {
   };
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '4em'}}>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2em 2em'}}>
       {
         socket? (
           name ? (
@@ -99,7 +101,10 @@ const PlayerPage = () => {
               currentQuestion ? (
                 <>
                   <GameScreenMobile currentQuestion={currentQuestion} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
-                  <button onClick={handleSubmit}>Submit</button>
+                  <button 
+                    style={{borderRadius: '15px', cursor: 'pointer', marginTop: '2em'}}
+                    onClick={handleSubmit}
+                  >Submit</button>
                 </> 
               ) : (
                 isAnswered.state ?  
@@ -124,17 +129,18 @@ const PlayerPage = () => {
                       </div>
                       {isAllWrong.state ? <Wrong answer={isAllWrong.answer} gameEnded={gameEnded} /> : <></> }
                     </> : 
-                    <div>Please Wait...</div>
+                    <div style={{fontSize: '16px'}}>Please Wait...</div>
                 )
               )
             ) : (
-                <div style={{display: 'flex', justifyContent: 'center', marginBlock: '1em'}}>
+                <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginBlock: '1em'}}>
+                  <h1 style={{textAlign: 'center', paddingBlock: '1em'}}>KBC Multiplayer Game</h1>
                   {gameEnded ?
                     <div>
                       <Result winner={winner} />
                       <LeaderBoard players={players} setWinner={setWinner} gameEnded={true} />
                     </div>
-                    : <div>Please Wait... Game is not Started yet</div>
+                    : <div style={{fontSize: '16px'}}>Please Wait...<br/> Game is not Started yet</div>
                   }
                 </div>
             )
@@ -157,7 +163,7 @@ const PlayerPage = () => {
             </form>
           )
         ) : (
-          <div>Loading...</div>
+          <div style={{fontSize: '16px'}}>Loading...</div>
         )
       }
     </div>

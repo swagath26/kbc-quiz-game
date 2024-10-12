@@ -29,6 +29,15 @@ h1, h2, h3 {
   margin: 0;
 }
 
+.main-screen {
+  padding: 4em 4em 1em;
+}
+
+.leader-board {
+  gap: 1.25em;
+  padding-block: 1em;
+}
+
 .leader-board-rank {
   width: 7em;
 }
@@ -41,20 +50,48 @@ h1, h2, h3 {
   min-width: 15em;
 }
 
+.leader-board-row {
+  gap: 1em;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.wrong {
+  font-size: 23px;
+  font-weight: 500;
+  gap: 2em;
+  padding-block: 1em;
+}
+
 @media (width < 1024px) {
   .main-screen {
     flex-direction: column-reverse;
+    padding: 2em 0;
   }
   .wrong {
     flex-direction: column;
+    font-size: 16px;
+    font-weight: 400;
+    gap: 3em;
+    margin-top: 1em;
+    padding-block: 0.75em;
+  }
+  .leader-board-row {
+    gap: 1em;
+    font-size: 16px;
+    font-weight: 400;
   }
   .leader-board-rank {
-    width: 4em;
+    width: 3em;
   }
   .leader-board-score {
     width: 3em;
   }
   .leader-board-name {
     min-width: auto;
+  }
+  .leader-board {
+    gap: 2em;
+    padding-block: 2.5em;
   }
 }
