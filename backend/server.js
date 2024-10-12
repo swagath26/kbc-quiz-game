@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
+require('dotenv').config();
 const questions = require('./questions');
 
 const app = express();
@@ -15,54 +16,51 @@ const io = new Server(server, {
 
 app.use(cors());
 
-// Game state
 let gameStarted = false;
 let currentQuestionIndex = 0;
 let players = [];
 let wrongAnswers = 0;
 
-// Serve the questions
 app.get('/questions', (req, res) => {
   res.json(questions);
 });
 
-// WebSocket communication
 io.on('connection', (socket) => {
   console.log(`Socket connected: ${socket.id}`);
 
-  // Player joins the game
   socket.on('joinGame', (name) => {
     const player = { id: socket.id, name, score: 0 };
     players.push(player);
+    io.emit('newPlayer', player);
     if(gameStarted) socket.emit('currentQuestion', questions[currentQuestionIndex]);
     console.log(`${name} has joined the game.`);
   });
 
-  // Send the current question to all players
   socket.on('startGame', () => {
     gameStarted = true;
+    resetScores();
+    socket.emit('playerList', {currentPlayers: players});
     io.emit('newQuestion', questions[currentQuestionIndex]);
     wrongAnswers = 0;
     socket.on('disconnect', () => {
       gameStarted = false;
       currentQuestionIndex = 0;
-      io.emit('gameOver', { players });
-      console.log('Host disconnected! Game Over!')
+      io.emit('gameOver');
+      console.log('Host disconnected! Game Over!');
     })
     console.log('The Game is started!');
   });
 
-  // Handle answer submission
   socket.on('submitAnswer', ({ answer, playerName }) => {
     const correctAnswer = questions[currentQuestionIndex].correctAnswer;
 
     if (answer === correctAnswer) {
-      // Find the correct player and increment their score
       const player = players.find((p) => p.name === playerName);
       if (player) {
         player.score += 1;
-        io.emit('correctAnswer', { name: playerName, answer: correctAnswer });
-        console.log(`${playerName} has given the correct answer: ${correctAnswer}.`)
+        socket.emit('congrats');
+        io.emit('correctAnswer', { name: playerName, answer: correctAnswer, updatedPlayers: players });
+        console.log(`${playerName} has given the correct answer: ${correctAnswer}.`);
         nextQuestion();
       }
     } else {
@@ -70,12 +68,18 @@ io.on('connection', (socket) => {
       wrongAnswers++;
       console.log(`${playerName} has given a wrong answer.`);
       if(players.length === wrongAnswers) {
-        io.emit('allWrong', { answer: correctAnswer });
+        io.emit('allWrong', { answer: correctAnswer, updatedPlayers: players });
         console.log(`No one has given the correct answer: ${correctAnswer}.`);
         nextQuestion();
       }
     }
   });
+
+  const resetScores = () => {
+    players.forEach(player => {
+      player.score = 0;
+    })
+  }
 
   const nextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -88,14 +92,16 @@ io.on('connection', (socket) => {
     } else {
       gameStarted = false;
       currentQuestionIndex = 0;
-      io.emit('gameOver', { players });
-      console.log('Game Over!')
+      io.emit('gameOver');
+      console.log('Game Over!');
     }
   }
 
   socket.on('disconnect', () => {
+    const playerLeft = players.find((player) => player.id === socket.id);
     players = players.filter((player) => player.id !== socket.id);
-    console.log(`User disconnected: ${socket.id}`);
+    if(playerLeft) io.emit('playerLeft', playerLeft);
+    console.log(`${playerLeft ? `${playerLeft.name} left the game | ` : ''}User disconnected: ${socket.id}`);
   });
 });
 

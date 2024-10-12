@@ -1,12 +1,11 @@
-// QRCodeComponent.js
 import React from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 
 const QRCodeComponent = ({ url }) => {
   return (
-    <div className="qr-code">
-      <h3>Scan the QR code to join the game:</h3>
-      <QRCodeCanvas value={url} size={256} />
+    <div className="qr-code" style={{display: 'flex', flexGrow: 1, flexDirection: 'column', alignItems: 'center', gap: '3em', padding: '2em'}}>
+      <h3 style={{textAlign: 'center'}}>Scan to join the Game</h3>
+      <QRCodeCanvas value={url} size={200} />
     </div>
   );
 };
