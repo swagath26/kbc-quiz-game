@@ -1,5 +1,5 @@
 import React from 'react';
-import useCountDown from './hooks/useCountDown';
+import useCountDown from '../hooks/useCountDown';
 
 const Wrong = ({ answer, gameEnded }) => {
     const counter = useCountDown();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PlayerPage from './PlayerPage';
-import MainScreen from './MainScreen';
+import PlayerPage from './components/PlayerPage';
+import MainScreen from './components/MainScreen';
 import './App.css';
 
 function App() {

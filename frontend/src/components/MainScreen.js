@@ -117,7 +117,7 @@ const MainScreen = () => {
             }
             <button 
               onClick={startGame}
-              style={{borderRadius: '15px', cursor: 'pointer', marginTop: '2em'}}
+              style={{borderRadius: '15px', cursor: 'pointer', marginBlock: '2em'}}
             >New Game</button>
           </div>
       )}

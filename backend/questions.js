@@ -1,5 +1,3 @@
-// questions.js
-
 const questions = [
     {
       question: 'What is the capital of France?',
@@ -27,5 +25,5 @@ const questions = [
       correctAnswer: '7',
     },
 ];
-  
-module.exports = questions;  
+
+module.exports = questions;

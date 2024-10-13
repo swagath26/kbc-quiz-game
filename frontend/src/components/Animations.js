@@ -1,8 +1,8 @@
 import React from 'react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import sadLottie from './assets/sad.lottie';
-import successLottie from './assets/success.lottie';
-import fireWorksLottie from './assets/fireworks.lottie';
+import sadLottie from '../assets/sad.lottie';
+import successLottie from '../assets/success.lottie';
+import fireWorksLottie from '../assets/fireworks.lottie';
 
 export const SadReaction = () => {
   return (

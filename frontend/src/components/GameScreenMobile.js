@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GameScreenMobile = ({ currentQuestion, selectedAnswer, setSelectedAnswer }) => {
+const GameScreenMobile = ({ currentQuestion, selectedAnswer, setSelectedAnswer, handleSubmit }) => {
   if (!currentQuestion) {
     return <></>;
   }
@@ -30,6 +30,10 @@ const GameScreenMobile = ({ currentQuestion, selectedAnswer, setSelectedAnswer }
             </label>
         ))}
       </div>
+      <button 
+        style={{borderRadius: '15px', cursor: 'pointer', marginTop: '1em'}}
+        onClick={handleSubmit}
+      >Submit</button>
     </div>
   );
 };
